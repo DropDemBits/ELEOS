@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level>
+	<layer0 width="64" height="64"  isOverlay="false">
+		<img></img>
+	</layer0>
+	<layer1 width="64" height="64" isOverlay="true">
+		<img></img>
+	</layer1>
+</level>
