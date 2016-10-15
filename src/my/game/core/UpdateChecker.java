@@ -10,7 +10,7 @@ public class UpdateChecker {
 	public static void checkForUpdates(String version) {
 		//url: https://raw.githubusercontent.com/xDIAMONDSx/xDIAMONDSx.github.io/master/eleos/versions.txt
 		try {
-			String url = "https://gist.githubusercontent.com/xDIAMONDSx/12b473ef7bd09112cb0e8fcbd6de58a0/raw/4c50cba34175693bb1816d0844e169fd99f59ced/eleosList.txt";
+			String url = "raw.githubusercontent.com/xDIAMONDSx/ELEOS/master/versions.txt";
 			//"https://raw.githubusercontent.com/xDIAMONDSx/xDIAMONDSx.github.io/master/eleos/versions.txt";
 			URL link = new URL(url);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(link.openStream()));

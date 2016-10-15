@@ -28,8 +28,8 @@ public class GameCore extends Canvas implements Runnable {
 	private static int width = 300 - 80, height = 168, scale = 3;
 	/**Window Object*/
 	private JFrame window;
-	private String version = "1.0b1";
-	public static boolean DEV = false;
+	private String version = "1.0b2";
+	public static boolean DEV = true;
 	
 	//Threads (Include others later)
 	private Thread clientThread;
@@ -238,6 +238,7 @@ public class GameCore extends Canvas implements Runnable {
 			uiMgr.update();
 			guiMgr.update();
 		}
+		if(ConnectionManager.INSTANCE.getConnectionState() == ConnectionState.CONNECTED) ConnectionManager.INSTANCE.sendKeepAlive();
 	}
 	
 	private void render() {

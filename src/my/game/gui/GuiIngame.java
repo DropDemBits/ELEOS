@@ -41,8 +41,6 @@ public class GuiIngame extends Gui {
 		
 		
 		int i = 3;
-		System.out.println(startTX*i - playerX*i);
-		System.out.println(startTY*i - playerY*i);
 		
 		if(startTX*i - playerX*i != 0) {
 			screenX += startTX*i - playerX*i;
@@ -54,8 +52,8 @@ public class GuiIngame extends Gui {
 		}
 		
 		if(screenX < 0 || screenY < 0 || screenX > GameCore.getWindowWidth() || screenY > GameCore.getWindowHeight()) {
-			//onClose();
-			//requestClose();
+			onClose();
+			requestClose();
 		}
 	}
 	

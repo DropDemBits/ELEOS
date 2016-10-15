@@ -2,6 +2,8 @@ package my.game.core;
 
 import java.net.*;
 
+import my.game.core.GameCore.*;
+import my.game.entity.player.*;
 import util.serialization.types.*;
 
 public class ConnectionManager {
@@ -14,7 +16,8 @@ public class ConnectionManager {
 	private String serverAddress;
 	private int serverPort;
 	private ConnectionState currentState = ConnectionState.NOT_CONNECTED;
-	public static final ConnectionManager INSTANCE = new ConnectionManager();	
+	private long nextKeepAlive = 0;
+	public static final ConnectionManager INSTANCE = new ConnectionManager();
 	
 	public enum ConnectionState {
 		NOT_CONNECTED,
@@ -81,6 +84,10 @@ public class ConnectionManager {
 		if(data.length < 3) return;
 		if(new String(data, 0, 4).getBytes().equals(SEDatabase.HEADER_META)) {
 			//Process data
+			SEDatabase db = SEDatabase.deserializeData(data);
+			if(db != null) {
+				handleDB(db, packet);
+			}
 		} else {
 			//Minimal data
 			if(data[0] != 8 || data[1] != 3) return;
@@ -92,12 +99,43 @@ public class ConnectionManager {
 			case 2:
 				//Keep alive
 				send(new byte[] {8, 3, 2});
+				nextKeepAlive = System.currentTimeMillis()+5000L;
 				break;
 			case 3:
 				//Connection Success
 				System.out.println("Successfully connected to "+serverAddress+":"+serverPort);
+				send(new byte[] {8, 3, 5});
 				currentState = ConnectionState.CONNECTED;
+				break;
+			case 4:
+				//Disconnect
+				currentState = ConnectionState.NOT_CONNECTED;
+				GameCore.instance().currentState = GameState.TITLE_SCREEN;
+				break;
 			}
+		}
+	}
+	
+	private void handleDB(SEDatabase db, DatagramPacket packet) {
+		String pName = db.pullObject("data").pullString("name").toString();
+		if(pName == "S1") {
+			if(GameCore.instance().getClientPlayer() instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP)GameCore.instance().getClientPlayer();
+				player.confirmMovement(db);
+			}else {
+				throw new RuntimeException("Player is not MP type even though we are on server");
+			}
+		}
+	}
+
+	public void sendKeepAlive() {
+		if(nextKeepAlive+10000L >= System.currentTimeMillis()) {
+			send(new byte[] {8, 3, 4});
+			currentState = ConnectionState.NOT_CONNECTED;
+			GameCore.instance().currentState = GameState.TITLE_SCREEN;
+		}
+		if(nextKeepAlive >= System.currentTimeMillis()) {
+			send(new byte[] {8, 3, 2});
 		}
 	}
 	

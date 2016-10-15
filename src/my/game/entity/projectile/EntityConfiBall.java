@@ -21,7 +21,7 @@ public class EntityConfiBall extends EntityProjectile {
 	
 	public void update() {
 		super.update();
-		if(level.detectCollision((int)(x+newX), (int)(y+newY), 5, 4, 7)) {
+		if(level.detectCollision((int)(x+newX), (int)(y+newY), 16, 16, 16)) {
 			removeAnim();
 			remove(); 
 		}
