@@ -52,8 +52,8 @@ public class GuiIngame extends Gui {
 		}
 		
 		if(screenX < 0 || screenY < 0 || screenX > GameCore.getWindowWidth() || screenY > GameCore.getWindowHeight()) {
-			onClose();
-			requestClose();
+			//onClose();
+			//requestClose();
 		}
 	}
 	

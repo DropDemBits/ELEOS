@@ -57,6 +57,7 @@ public class GameCore extends Canvas implements Runnable {
 	public static final EventBusser CORE_BUSSER = new EventBusser();
 	public GameState currentState;
 	private Gui activeMenuGui;
+	private boolean playingMusic = false;
 	
 	//Connection Related
 	private ConnectionManager connectionMgr;
@@ -196,6 +197,12 @@ public class GameCore extends Canvas implements Runnable {
 		if(currentState == GameState.TITLE_SCREEN) {
 			activeMenuGui.setActive();
 			activeMenuGui.update();
+			if(!playingMusic && (new Random().nextInt(1000) == 0)) { 
+				playingMusic = true;
+				Utilities.playSound("title.wav", 0, () -> {
+					playingMusic = false;
+				});
+			}
 		}else if(currentState == GameState.MULTIPLAYER_SELECTION && DEV) {
 			if(!init) return;
 			if(connectionMgr.getConnectionState() == ConnectionState.NOT_CONNECTED) {

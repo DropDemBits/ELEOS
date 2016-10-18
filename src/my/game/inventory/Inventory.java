@@ -1,5 +1,9 @@
 package my.game.inventory;
 
+/**
+ * Container for a generic inventory object
+ *
+ */
 public class Inventory {
 
 	ItemStack[] items;

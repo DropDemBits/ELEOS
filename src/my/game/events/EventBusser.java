@@ -12,13 +12,13 @@ public class EventBusser {
 	
 	public EventBusser() {}
 	
+	/**
+	 * Invokes all listeners of a specific event
+	 * 
+	 * @param e The event to invoke the handlers
+	 */
 	public void postToAllListeners(Event e) {
 		try {
-			/*Constructor<?> constructor;
-			constructor = e.getClass().getConstructor();
-			constructor.setAccessible(true);
-			Event defaultCons = (Event) constructor.newInstance();*/
-			
 			ArrayList<IEventListener> eListeners = listeners.get(e.getClass().getName());
 			if(eListeners == null) return;
 			for (IEventListener listen : eListeners) {
@@ -29,6 +29,11 @@ public class EventBusser {
 		}
 	}
 	
+	/**
+	 * Registers a listener
+	 * 
+	 * @param handler The class containing event handlers
+	 */
 	public void registerListener(Object handler) {
 		List<Class<?>> supers = new ArrayList<Class<?>>();
 		supers.add(handler.getClass());
@@ -64,7 +69,7 @@ public class EventBusser {
 						 * send to eventType
 						 */
 						
-						//In GEL, Implement IEventListener, invoke stuff
+						//In Generic Event Listener, Implement IEventListener, invoke stuff
 						GenericEventListener l = new GenericEventListener(method, handler);
 						l.setPriority(eventMethod.getAnnotation(EventHandler.class).value());
 						
@@ -97,6 +102,33 @@ public class EventBusser {
 					//System.err.println("____________________________________________________");
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Registers a listener
+	 * 
+	 * @param evtClass The Event the listener handles
+	 * @param listener The listener object
+	 * @param priority The priority of the listener
+	 */
+	public void registerListener(Class<? extends Event> evtClass, IEventListener listener, EventHandler priority) {
+		ArrayList<IEventListener> otherHandlers = listeners.get(evtClass.getName());
+		if(otherHandlers == null) {
+			otherHandlers = new ArrayList<IEventListener>();
+			otherHandlers.add(l);
+			listeners.put(eventType.getName(), otherHandlers);
+		}else {
+			otherHandlers.add(l);
+			otherHandlers.sort(new Comparator<IEventListener>() {
+
+				@Override
+				public int compare(IEventListener one, IEventListener two) {
+					return one.getPriority().compareTo(two.getPriority());
+				}
+				
+			});
+			listeners.put(eventType.getName(), otherHandlers);
 		}
 	}
 	

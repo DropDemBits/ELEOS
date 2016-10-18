@@ -1,5 +1,6 @@
 out/
 .settings/
 res/sound/bfxr/
+.metadata/
 .classpath
 .project

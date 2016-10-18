@@ -34,6 +34,20 @@ public class ItemStack {
 		return null;
 	}
 	
+	public ItemStack splitStack(int size) {
+		if(quantity - size < 0) {
+			size = quantity;
+		}
+		int newQuantity = quantity - size;
+		ItemStack ret = new ItemStack(item, newQuantity);
+		qunatity -= size;
+		if(quantity <= 0) {
+			quantity = 0;
+			item = null;
+		}
+		return ret;
+	}
+	
 	public Item getItem() {
 		return item;
 	}

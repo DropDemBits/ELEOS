@@ -35,7 +35,7 @@ public class ChestTile extends TileContainer {
 	
 	@Override
 	public boolean isInFront() {
-		return true;
+		return false;
 	}
 	
 	@Override
