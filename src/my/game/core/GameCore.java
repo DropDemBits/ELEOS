@@ -17,6 +17,7 @@ import my.game.item.*;
 import my.game.network.*;
 import my.game.render.*;
 import my.game.render.ui.UIManager;
+import my.game.util.Utilities;
 import my.game.world.*;
 
 //We want to paint on it...

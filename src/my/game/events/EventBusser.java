@@ -116,10 +116,10 @@ public class EventBusser {
 		ArrayList<IEventListener> otherHandlers = listeners.get(evtClass.getName());
 		if(otherHandlers == null) {
 			otherHandlers = new ArrayList<IEventListener>();
-			otherHandlers.add(l);
-			listeners.put(eventType.getName(), otherHandlers);
+			otherHandlers.add(listener);
+			listeners.put(evtClass.getName(), otherHandlers);
 		}else {
-			otherHandlers.add(l);
+			otherHandlers.add(listener);
 			otherHandlers.sort(new Comparator<IEventListener>() {
 
 				@Override
@@ -128,7 +128,7 @@ public class EventBusser {
 				}
 				
 			});
-			listeners.put(eventType.getName(), otherHandlers);
+			listeners.put(evtClass.getName(), otherHandlers);
 		}
 	}
 	

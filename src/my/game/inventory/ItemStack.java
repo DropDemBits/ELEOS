@@ -40,7 +40,7 @@ public class ItemStack {
 		}
 		int newQuantity = quantity - size;
 		ItemStack ret = new ItemStack(item, newQuantity);
-		qunatity -= size;
+		quantity -= size;
 		if(quantity <= 0) {
 			quantity = 0;
 			item = null;

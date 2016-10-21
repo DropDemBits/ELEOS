@@ -19,7 +19,7 @@ public class GenericEventListener implements IEventListener {
 	public void invoke(Event e) {
 		
 		try {
-			if(e.isCancelled) return;
+			if(e.isCancelled()) return;
 			leanTo.setAccessible(true);
 			leanTo.invoke(declared, e);
 		} catch (Exception e1) {
