@@ -8,7 +8,7 @@ public class ItemConfiCannon extends ItemShooter {
 
 	@Override
 	public int getFireRate() {
-		return 15;
+		return 15;//new java.util.Random(System.currentTimeMillis()).nextInt(15);
 	}
 	
 	@Override

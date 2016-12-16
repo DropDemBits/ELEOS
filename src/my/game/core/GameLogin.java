@@ -31,7 +31,6 @@ public class GameLogin extends JFrame {
 		btnJoin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(textField.getText().isEmpty()) return;
 				running = false;
 			}
 		});
@@ -60,7 +59,7 @@ public class GameLogin extends JFrame {
 		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		while(running) {System.out.println();}
+		while(running) {System.out.printf("\0");}
 		setVisible(false);
 	}
 	

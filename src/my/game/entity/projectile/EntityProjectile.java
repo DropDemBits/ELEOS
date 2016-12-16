@@ -39,7 +39,6 @@ public class EntityProjectile extends Entity {
 					if(((EntityMob) e).health <= 0) {
 						owner.currentExp += ((EntityMob)e).expGiven;
 					}
-					removeAnim();
 					remove();
 				}
 			}
@@ -49,7 +48,6 @@ public class EntityProjectile extends Entity {
 			if(e != owner && e.getBox().intersectBoth(box)) {
 				if(e instanceof NetPlayer && owner == GameCore.instance().getClientPlayer() || owner instanceof NetPlayer) continue;
 				e.damage(new DamageSource(dmg, this));
-				removeAnim();
 				remove();
 			}
 		}
@@ -63,7 +61,5 @@ public class EntityProjectile extends Entity {
 	public Sprite getSprite() {
 		return sprite;
 	}
-
-	public void removeAnim() {}
 
 }

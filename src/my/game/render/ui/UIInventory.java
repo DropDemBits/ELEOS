@@ -1,17 +1,21 @@
 package my.game.render.ui;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.image.*;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
-import my.game.core.*;
-import my.game.entity.*;
-import my.game.entity.player.*;
-import my.game.events.*;
-import my.game.inventory.*;
-import my.game.item.*;
-import my.game.render.*;
-import my.game.util.*;
+import my.game.core.GameCore;
+import my.game.entity.EntityItem;
+import my.game.entity.player.EntityPlayer;
+import my.game.events.EventHandler;
+import my.game.events.MouseEvent;
+import my.game.events.MouseHandler;
+import my.game.inventory.Inventory;
+import my.game.inventory.ItemStack;
+import my.game.item.Item;
+import my.game.render.Sprite;
+import my.game.util.Vector2i;
 
 /**
  * <p>This took way too long to make...
@@ -80,6 +84,7 @@ import my.game.util.*;
  * <br> 
  * <br> 
  * <p><b><i>WAY</i></b> too long...
+ * <p>And it could of taken shorter to make</p>
  */
 
 public class UIInventory extends UIComponent {
@@ -97,6 +102,7 @@ public class UIInventory extends UIComponent {
 	
 	@Override
 	public void update() {
+		currentItem = player.currentItem;
 		updateInventory();
 	}
 	
@@ -195,17 +201,23 @@ public class UIInventory extends UIComponent {
 				}
 			}
 		}else if(currentItem != null) {
-			if(e.button == 1) {
+			/*if(GameCore.instance().getGuiMgr().mouseInGui(e.x, e.y)) return;
+			if(e.button == 3) {
 				//multi
 				EntityItem item = new EntityItem(GameCore.instance().getClientPlayer().level,
 						GameCore.instance().getClientPlayer().x, GameCore.instance().getClientPlayer().y, currentItem);
 				GameCore.instance().getClientPlayer().level.spawnEntity(item);
 				currentItem = null;
-			}else if(e.button == 3) {
+			}else if(e.button == 1) {
 				//single
+				EntityItem item = new EntityItem(GameCore.instance().getClientPlayer().level,
+						GameCore.instance().getClientPlayer().x, GameCore.instance().getClientPlayer().y, new ItemStack(currentItem.getItem(), 1));
+				GameCore.instance().getClientPlayer().level.spawnEntity(item);
 				currentItem.quantity--;
-				if(currentItem.quantity <= 0) currentItem = null;
-			}
+				if(currentItem.quantity <= 0) {
+					currentItem = null;
+				}
+			}*/
 		}
 		player.currentItem = currentItem;
 	}
@@ -276,6 +288,11 @@ public class UIInventory extends UIComponent {
 			BufferedImage image = new BufferedImage(itemSprite.getWidth(), itemSprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			image.setRGB(0, 0, itemSprite.getWidth(), itemSprite.getHeight(), itemSprite.pixels, 0, itemSprite.getWidth());
 			g.drawImage(image, MouseHandler.getMouseX()-itemSprite.getWidth()/2, MouseHandler.getMouseY()-itemSprite.getHeight()/2, 108/3, 108/3, null);
+			
+			g.setColor(new Color(0xFFFFFF));
+			g.setFont(new Font("Snake", 0, 10));
+			String text = ""+stack.quantity;
+			g.drawString(text, MouseHandler.getMouseX()-itemSprite.getWidth()/2+108/3, MouseHandler.getMouseY()-itemSprite.getHeight()/2+108/3);
 			itemSprite.makeFalseTransparancy();
 		}
 	}

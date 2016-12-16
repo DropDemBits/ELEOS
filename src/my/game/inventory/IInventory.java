@@ -14,6 +14,10 @@ public interface IInventory {
 	
 	public void onChanged();
 
+	public ItemStack getStack(int slot);
+	
+	public void setStack(int slot, ItemStack stack);
+	
 	/**
 	 * Called when the inventory is opened
 	 */

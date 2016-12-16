@@ -17,6 +17,7 @@ public class EntitySpawner extends Entity {
 	}
 	
 	private Type type;
+	private Entity spawn;
 	private int amount;
 	boolean constant;
 	
@@ -43,6 +44,32 @@ public class EntitySpawner extends Entity {
 				if(type != Type.PARTICLE) level.spawnEntity(e);
 				else if(type == Type.PARTICLE) level.spawnParticle((EntityParticle) e);
 			}
+			remove();
+		}
+	}
+
+	public EntitySpawner(CentralLevel level, int x, int y, Entity spn, int amount, boolean constant) {
+		super(level);
+		this.x = x;
+		this.y = y;
+		this.amount = amount;
+		this.constant = constant;
+		spawn = spn;
+		if(!constant) {
+			for(int i = 0; i < amount; i++) {
+				Entity e;
+				try {
+					e = spawn.getClass().newInstance();
+					e.x += (-5+rand.nextInt(7)*16);
+					e.y += (-5+rand.nextInt(7)*16);
+					if(spawn instanceof EntityParticle) level.spawnParticle((EntityParticle) e);
+					else if(spawn instanceof Entity) level.spawnEntity(e);
+					entities.add(e);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			remove();
 		}
 	}
 
@@ -67,9 +94,21 @@ public class EntitySpawner extends Entity {
 				level.spawnEntity(t);
 				entities.add(t);
 			}else if(type == Type.BLASER) {
-				EntityLaserBlaser e = new EntityLaserBlaser(level, (int)x + (-5 + rand.nextInt(7))*16, (int)y + (-1 + rand.nextInt(7)*16));
-				level.spawnEntity(e);
-				entities.add(e);
+				EntityLaserBlaser h = new EntityLaserBlaser(level, (int)x + (-5 + rand.nextInt(7))*16, (int)y + (-1 + rand.nextInt(7)*16));
+				level.spawnEntity(h);
+				entities.add(h);
+			}else if(spawn != null){
+				Entity e;
+				try {
+					e = spawn;
+					e.x += (-5+rand.nextInt(7)*16);
+					e.y += (-5+rand.nextInt(7)*16);
+					if(spawn instanceof EntityParticle) level.spawnParticle((EntityParticle) e);
+					else if(spawn instanceof Entity) level.spawnEntity(e);
+					entities.add(e);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 		for(Entity e : entities) {

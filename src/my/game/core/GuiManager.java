@@ -47,8 +47,8 @@ public class GuiManager {
 	 * @param id The enum id of the gui that will be opened (ie Chest = 0)
 	 * @param inv An object that implements the <a>IInventory</a> interface
 	 */
-	public void openGui(int x, int y, EntityPlayer player, GuiConstants id, IInventory inv) {
-		openGui(x, y, player, id.ordinal(), inv);
+	public int openGui(int x, int y, EntityPlayer player, GuiConstants id, IInventory inv) {
+		return openGui(x, y, player, id.ordinal(), inv);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class GuiManager {
 	 * @param id The integer id of the gui that will be opened (ie Chest = 0)
 	 * @param inv An object that implements the <a>IInventory</a> interface
 	 */
-	public void openGui(int x, int y, EntityPlayer player, int id, IInventory inv) {
+	public int openGui(int x, int y, EntityPlayer player, int id, IInventory inv) {
 		if(x < 0) x = 0;
 		if(y < 0) y = 0;
 		int screenX = MouseHandler.getMouseX()/*-24*2-8*/, screenY = MouseHandler.getMouseY()/*-8*2-8-32-15*/;
@@ -69,15 +69,16 @@ public class GuiManager {
 		GuiIngame g;
 		currentGuiID++;
 		switch(id) {
-		case 0: g = (GuiIngame) new ExampleGui(inv, player).setID(currentGuiID)/*.setScreenPosition(screenX, screenY).setOrigin(x, y)*/; break;
+		case 0: g = (GuiIngame) new ChestGui(inv, player).setID(currentGuiID)/*.setScreenPosition(screenX, screenY).setOrigin(x, y)*/; break;
 		default:
 			g = (findGuiManager(id) != null ? (GuiIngame) findGuiManager(id).openGui(x, y, player, id, inv) : new ExampleGui(inv, player).setScreenPosition(screenX, screenY).setOrigin(x, y)); break;
 		}
 		
-		g.setOrigin(x, y).setScreenPosition(screenX, screenY-15);
+		g.setOrigin(x, y).setScreenPosition(screenX-80, screenY-15);
 		
 		openGuis.add(g);
 		g.onOpen();
+		return g.getID();
 	}
 	
 	private IGuiHandler findGuiManager(int id) {
@@ -101,7 +102,7 @@ public class GuiManager {
 	}
 	
 	/**
-	 * Close all open Guis
+	 * Close all open GUIs
 	 */
 	public void closeAllGuis() {
 		for(GuiIngame gui : openGuis) {
@@ -111,21 +112,51 @@ public class GuiManager {
 	}
 	
 	/**
-	 * Close a Gui based on the instance of that Gui
-	 * @param g
+	 * Close a GUI based on the instance of that GUI
+	 * @param g The instance of the GUI
 	 */
 	public void closeGui(Gui g) {
 		openGuis.remove(g);
 	}
 	
 	/**
-	 * Close the most recently opened Gui
+	 * Closes a GUI using the id
+	 */
+	public boolean closeGui(int id) {
+		for(int i = 0; i < openGuis.size(); i++) {
+			Gui g = openGuis.get(i);
+			if(g.getID() == id) {
+				if(g instanceof GuiIngame)
+					((GuiIngame)g).onClose();
+				openGuis.remove(g);
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Close the most recently opened GUI
 	 */
 	public void closeRecentGui() {
 		if(openGuis.isEmpty()) return;
 		GuiIngame g = openGuis.get(openGuis.size()-1);
 		g.onClose();
 		openGuis.remove(g);
+	}
+	
+	/**
+	 * Checks if the mouse is in a GUI
+	 * @param x The X of the mouse
+	 * @param y The Y of the mouse
+	 * @return If true, the mouse is in a GUI
+	 */
+	public boolean mouseInGui(int x, int y) {
+		for(Gui g : openGuis) {
+			if(g.getClass() != GuiIngame.class) continue;
+			GuiIngame gui = (GuiIngame) g;
+			if(x >= gui.screenX && x <= gui.getWidth() + gui.screenX && y >= gui.screenY && y <= gui.getHeight() + gui.screenY) return true;
+		}
+		return false;
 	}
 	
 	private static class VanillaGuiHandler implements IGuiHandler {
@@ -137,10 +168,10 @@ public class GuiManager {
 
 		@Override
 		public boolean getAppropriateGui(int id) {
-			if(id < 1024 && id > -1) return true;
+			if(id <= 1023 && id >= 0) return true;
 			return false;
 		}
 		
 	}
-
+	
 }

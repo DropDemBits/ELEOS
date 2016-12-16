@@ -68,7 +68,6 @@ public class GameCore extends Canvas implements Runnable {
 	 */
 	private boolean running = false;
 	
-	//Constructor (No destructors in Java)
 	public GameCore(String[] args) throws Exception {
 		//Do pre-runtime things here
 		instance = this;
@@ -102,7 +101,7 @@ public class GameCore extends Canvas implements Runnable {
 		window.addKeyListener(keys);
 		
 		activeMenuGui = new GuiMenuMain();
-		currentState = GameState.TITLE_SCREEN;
+		currentState = GameState.GAMEPLAY;
 		
 		connectionMgr = ConnectionManager.INSTANCE;
 	}
@@ -185,6 +184,13 @@ public class GameCore extends Canvas implements Runnable {
 				if(window.isActive())window.requestFocus();
 			}
 			
+			//Sleep to allow processes to run
+			try {
+				Thread.sleep(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			//Stop the loop once a condition has been met...
 		}
 	}
@@ -198,7 +204,7 @@ public class GameCore extends Canvas implements Runnable {
 		if(currentState == GameState.TITLE_SCREEN) {
 			activeMenuGui.setActive();
 			activeMenuGui.update();
-			if(!playingMusic && (new Random().nextInt(1000) == 0)) { 
+			if(!Utilities.muted && !playingMusic && (new Random().nextInt(1000) == 0)) { 
 				playingMusic = true;
 				Utilities.playSound("title.wav", 0, () -> {
 					playingMusic = false;
@@ -316,9 +322,10 @@ public class GameCore extends Canvas implements Runnable {
 	public static void main(String[] args) throws Exception {
 		String uname = "";
 		if(args.length > 0) {
-			if(args[0].split("=")[0].contains("--") && args[0].contains("--usrName")) {
+			if(args[0].split("=")[0].contains("--") && (args[0].contains("--username") || args[0].contains("--usrName"))) {
 				//Show login
-				uname = args[0].split("=")[1];
+				uname = args[0].replace("--username=", "");
+				uname = args[0].replace("--usrName=", "");
 			}else {
 				GameLogin login = new GameLogin();
 				uname = login.getVars()[0];

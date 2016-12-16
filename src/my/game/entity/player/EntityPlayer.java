@@ -11,6 +11,7 @@ import my.game.core.*;
 import my.game.core.GameCore.*;
 import my.game.entity.*;
 import my.game.entity.mob.*;
+import my.game.entity.particle.EntityParticle;
 import my.game.entity.projectile.*;
 import my.game.events.*;
 import my.game.events.MouseEvent;
@@ -178,8 +179,10 @@ public class EntityPlayer extends EntityMob {
 
 	@Override
 	public void update() {
+		boolean movingX = false, movingY = false;
 		super.update();
-		noClip = false;
+		if(currentItem != null && currentItem.quantity == 0) currentItem = null;
+		noClip = true;
 		if(rand.nextInt(100) == 0) health += 0.5;
 		if(health > 100) health = 100;
 		else if(health < 0) health = 0;
@@ -204,19 +207,30 @@ public class EntityPlayer extends EntityMob {
 		}
 		
 		if (input.isKeyPressed(KeyEvent.VK_W) || input.isKeyPressed(KeyEvent.VK_UP)) {
-			yDir = -movementSpeed;
+			yDir += -movementSpeed / 4d;
 			current = up;
-		} if (input.isKeyPressed(KeyEvent.VK_S) || input.isKeyPressed(KeyEvent.VK_DOWN)) {
-			yDir = movementSpeed;
+			movingY = true;
+		}
+		if (input.isKeyPressed(KeyEvent.VK_S) || input.isKeyPressed(KeyEvent.VK_DOWN)) {
+			yDir += +movementSpeed / 4d;
 			current = down;
+			movingY = true;
 		}
 		if (input.isKeyPressed(KeyEvent.VK_A) || input.isKeyPressed(KeyEvent.VK_LEFT)) {
-			xDir = -movementSpeed;
+			xDir += -movementSpeed / 4d;
 			current = left;
-		}if (input.isKeyPressed(KeyEvent.VK_D) || input.isKeyPressed(KeyEvent.VK_RIGHT)) {
-			xDir = movementSpeed;
-			current = right;
+			movingX = true;
 		}
+		if (input.isKeyPressed(KeyEvent.VK_D) || input.isKeyPressed(KeyEvent.VK_RIGHT)) {
+			xDir += +movementSpeed / 4d;
+			current = right;
+			movingX = true;
+		}
+		if(xDir > movementSpeed) xDir = movementSpeed;
+		if(yDir > movementSpeed) yDir = movementSpeed;
+		if(xDir < -movementSpeed) xDir = -movementSpeed;
+		if(yDir < -movementSpeed) yDir = -movementSpeed;
+		
 		if(input.heal) {
 			health = maxHealth;
 		}
@@ -235,7 +249,16 @@ public class EntityPlayer extends EntityMob {
 		if(moving) current.update();
 		else current.setFrame(0);
 		
-		xDir = yDir = 0;
+		
+		if(xDir > 0 && !movingX) xDir += -movementSpeed / 8d;
+		//else xDir = 0;
+		if(xDir < 0 && !movingX) xDir += movementSpeed / 8d;
+		//else xDir = 0;
+		
+		if(yDir > 0 && !movingY) yDir += -movementSpeed / 8d;
+		//else yDir = 0;
+		if(yDir < 0 && !movingY) yDir += movementSpeed / 8d;
+		//else yDir = 0;
 	}
 	
 	@EventHandler
@@ -378,6 +401,17 @@ public class EntityPlayer extends EntityMob {
 			}
 		}
 		moving = false;
+		my.game.render.Font fnt = new my.game.render.Font();
+		fnt.drawString(screen, 0, 0, "X: " + x + "\nY: " + y, false);
+	}
+	
+	@Override
+	public void removeAnim() {
+		Utilities.playSound("confi_Spread.wav", -20);
+		for(int i = 0; i < 128; i++) {
+			Sprite s = new Sprite(2, 2, rand.nextInt());
+			level.spawnParticle(new EntityParticle(level, (int)x, (int)y, rand.nextInt(300), s));
+		}
 	}
 	
 	public String hitSound() {

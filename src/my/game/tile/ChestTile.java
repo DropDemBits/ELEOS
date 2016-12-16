@@ -6,7 +6,7 @@ import my.game.entity.player.*;
 import my.game.render.*;
 import my.game.world.*;
 
-public class ChestTile extends TileContainer {
+public class ChestTile extends Tile {
 
 	boolean opened = false;
 	int dir = 0;
@@ -22,8 +22,14 @@ public class ChestTile extends TileContainer {
 		ChestTE te = (ChestTE) level.getTileEntity(x, y, ChestTE.class);
 		if(te == null) return true;
 		if(button == 1) { 
-			if (!te.isOpen) { GameCore.instance().getGuiMgr().openGui(x, y, player, GuiConstants.CHEST, te); return false; }
-			else { GameCore.instance().getGuiMgr().closeRecentGui(); return false;}
+			if (!te.isOpen) { 
+				te.ourGuiID = GameCore.instance().getGuiMgr().openGui(x, y, player, GuiConstants.CHEST, te);
+				return false;
+			}
+			else { 
+				GameCore.instance().getGuiMgr().closeGui(te.ourGuiID); 
+				return false;
+			}
 		}
 		return true;
 	}
@@ -45,6 +51,11 @@ public class ChestTile extends TileContainer {
 		allSprites.setFrame(te.isOpen?4+dir:dir);
 		sprite = allSprites.getSprite();
 		screen.renderTile(x*16, y*16, this);
+	}
+	
+	@Override
+	public boolean hasTileEntity() {
+		return true;
 	}
 	
 	@Override

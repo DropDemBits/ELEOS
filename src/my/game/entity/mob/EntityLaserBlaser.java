@@ -60,21 +60,20 @@ public class EntityLaserBlaser extends EntityMob {
 		}else{
 			selectionCooldown--;
 		}
+
+		current.setFrame(1);
 		if(fireRate <= 0 && target != null) {
 			double dx = target.x-x;
 			double dy = target.y-y;
 			double tan = Math.atan2(dy, dx);
 			shoot(new EntityLaser(level, (int)x, (int)y, tan, this));
-			/*for(double dir = 0; dir < Math.PI*2; dir+=0.05)
-				shoot(new EntityLaser(level, (int)x, (int)y, dir, this));*/
 			current.setFrame(0);
 			time1+=60;
 			fireRate = EntityLaser.fireRate;
 		}else if(time1 > 0) { 
-			current.setFrame(0);
+			current.setFrame(1);
 			time1-=(EntityLaser.fireRate/2)+1;
 		}
-		else current.setFrame(1);
 		if(time1 <= 0) time1 = 0;
 		sprite = current.getSprite();
 	}

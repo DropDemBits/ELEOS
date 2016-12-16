@@ -228,10 +228,10 @@ public class Level {
 	 */
 	public boolean setTile(int x, int y, int layer, Tile tile) {
 		if(x < 0 || y < 0 || x >= width || y >= height || tile == null) return false;
-		if(getTile(x, y, 0) instanceof TileContainer || getTile(x, y, 1) instanceof TileContainer)
+		if(getTile(x, y, 0).hasTileEntity() || getTile(x, y, 1).hasTileEntity())
 			removeTileEntity(x, y);
-		if(tile instanceof TileContainer)
-			addTileEntity(((TileContainer) tile).getTileEntity().setPos(x, y, layer));
+		if(tile.hasTileEntity())
+			addTileEntity( tile.getTileEntity().setPos(x, y, layer));
 		tileList[layer][x+y*width] = tile;
 		return true;
 	}
@@ -328,10 +328,10 @@ public class Level {
 	 * @return The distance between the two entities
 	 */
 	public double getDistance(Entity from, Entity to) {
-		int x = (int)to.x;
-		int y = (int)to.y;
-		int dX = Math.abs((int)from.x-x)*Math.abs((int)from.x-x);
-		int dY = Math.abs((int)from.y-y)*Math.abs((int)from.y-y);
+		double x = (double)to.x;
+		double y = (double)to.y;
+		double dX = Math.abs((double)from.x-x)*Math.abs((double)from.x-x);
+		double dY = Math.abs((double)from.y-y)*Math.abs((double)from.y-y);
 		double distance = Math.sqrt(dX+dY);
 		return distance;
 	}

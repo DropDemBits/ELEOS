@@ -17,6 +17,7 @@ public class ItemStack {
 	}
 	
 	public ItemStack combineStacks(ItemStack srcStack) {
+		if(srcStack == null) return null;
 		if(getItem() != null && srcStack.getItem() != null) {
 			if(srcStack.getItem() == getItem() && getItem().getMaxStackSize() > 1) {
 				int totalQ = this.quantity + srcStack.quantity;

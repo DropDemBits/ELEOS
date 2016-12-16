@@ -33,9 +33,12 @@ public abstract class Entity {
 	}
 	
 	public void remove() {
+		removeAnim();
 		//TODO: Remove from the level
 		removed = true;
 	}
+	
+	public void removeAnim() {}
 	
 	public boolean isRemoved() {
 		return removed;

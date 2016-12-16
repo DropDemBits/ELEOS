@@ -80,6 +80,10 @@ public class Gui {
 		 return this;
 	}
 	
+	public int getID() {
+		return id;
+	}
+	
 	/**
 	 * Requests to close a gui
 	 */

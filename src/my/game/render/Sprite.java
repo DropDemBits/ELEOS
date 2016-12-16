@@ -12,6 +12,7 @@ public class Sprite {
 	public int[] pixels;
 	SpriteSheet parent;
 	
+	//Tiles
 	public static Sprite air = new Sprite(16);
 	public static Sprite grass = new Sprite(16, 0, 1, SpriteSheet.mainSheet);
 	public static Sprite stone = new Sprite(16, 1, 0, SpriteSheet.mainSheet);
@@ -35,25 +36,25 @@ public class Sprite {
 	public static Sprite fireballSmall3 = new Sprite(16, 1, 1, SpriteSheet.fireballSmall);
 	
 	public static Sprite fireballSmallOther = new Sprite(8, 0, 0, SpriteSheet.fireballSmall2);
-	public static Sprite arrow = new Sprite(SpriteSheet.arrow.getPixels(), 16, 16);
-	public static Sprite confiBall = new Sprite(SpriteSheet.confiBall.getPixels(), 16, 16);
+	public static Sprite arrow         = new Sprite(SpriteSheet.arrow.getPixels(), 16, 16);
+	public static Sprite confiBall     = new Sprite(SpriteSheet.confiBall.getPixels(), 16, 16);
 	
 	//Particle
-	public static Sprite fireParticle = new Sprite(3, 0, 0, SpriteSheet.fireParticle);
+	public static Sprite fireParticle  = new Sprite(3, 0, 0, SpriteSheet.fireParticle);
 	public static Sprite fireParticle1 = new Sprite(3, 1, 0, SpriteSheet.fireParticle);
 	public static Sprite fireParticle2 = new Sprite(3, 1, 1, SpriteSheet.fireParticle);
 	public static Sprite fireParticle3 = new Sprite(3, 0, 1, SpriteSheet.fireParticle);
-	public static Sprite laser = new Sprite(SpriteSheet.laser.getPixels(), 16, 16);
-	public static Sprite dumboStill = new Sprite(16, 0, 0, SpriteSheet.dumbo);
+	public static Sprite laser         = new Sprite(SpriteSheet.laser.getPixels(), 16, 16);
+	public static Sprite dumboStill    = new Sprite(16, 0, 0, SpriteSheet.dumbo);
 	
 	//Items
-	public static Sprite fireStaff    = new Sprite(8, 0, 0, SpriteSheet.items);
-	public static Sprite woodenBow    = new Sprite(8, 1, 0, SpriteSheet.items);
-	public static Sprite confiCannon  = new Sprite(8, 1, 1, SpriteSheet.items);
-	public static Sprite swordBasic   = new Sprite(8, 0, 1, SpriteSheet.items);
+	public static Sprite fireStaff     = new Sprite(8, 0, 0, SpriteSheet.items);
+	public static Sprite woodenBow     = new Sprite(8, 1, 0, SpriteSheet.items);
+	public static Sprite confiCannon   = new Sprite(8, 1, 1, SpriteSheet.items);
+	public static Sprite swordBasic    = new Sprite(8, 0, 1, SpriteSheet.items);
 	
-	public static Sprite healthPotion = new Sprite(8, 2, 0, SpriteSheet.items);
-	public static Sprite expPotion    = new Sprite(8, 2, 1, SpriteSheet.items);
+	public static Sprite healthPotion  = new Sprite(8, 2, 0, SpriteSheet.items);
+	public static Sprite expPotion     = new Sprite(8, 2, 1, SpriteSheet.items);
 	
 	public Sprite(int size) {
 		SIZE = size;
@@ -72,7 +73,7 @@ public class Sprite {
 	}
 	
 	
-	protected Sprite(SpriteSheet parent, int width, int height) {
+	public Sprite(int width, int height, SpriteSheet parent) {
 		SIZE = width == height ? width : -1;
 		this.parent = parent;
 		this.width = width;

@@ -54,12 +54,17 @@ public class CentralLevel extends Level {
 			System.err.println("ERR: Could Not Load Level...");
 			e.printStackTrace();
 		}
+		
 		EntitySpawner item = new EntitySpawner(this, 60*16, 60*16, Type.CHASER, 18, true);
 		spawnEntity(item);
 		EntityLaserBlaser blazor = new EntityLaserBlaser(this, (29*2+5)*16, (29*2+5)*16);
 		spawnEntity(blazor);
 		EntityStarboard star = new EntityStarboard(this, (29*2+6)*16, (29*2+6)*16);
 		spawnEntity(star);
+		
+		EntityLaserPulser pulse = new EntityLaserPulser(this, 60*16, 60*16);
+		EntitySpawner thing = new EntitySpawner(this, 60*16, 60*16, pulse, 4, true);
+		spawnEntity(thing);
 	}
 	
 	public Tile getTileFrmRGB(int x, int y, int[] tiles) {

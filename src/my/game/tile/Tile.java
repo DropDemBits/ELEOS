@@ -71,6 +71,14 @@ public class Tile {
 		return this;
 	}
 	
+	public boolean hasTileEntity() {
+		return false;
+	}
+	
+	public TileEntity getTileEntity() {
+		return null;
+	}
+	
 	@Override
 	public String toString() {
 		return name;

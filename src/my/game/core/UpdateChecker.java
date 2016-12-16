@@ -10,7 +10,7 @@ public class UpdateChecker {
 	public static void checkForUpdates(String version) {
 		//url: https://raw.githubusercontent.com/xDIAMONDSx/xDIAMONDSx.github.io/master/eleos/versions.txt
 		try {
-			String url = "raw.githubusercontent.com/xDIAMONDSx/ELEOS/master/versions.txt";
+			String url = "https://raw.githubusercontent.com/xDIAMONDSx/ELEOS/master/versions.txt";
 			//"https://raw.githubusercontent.com/xDIAMONDSx/xDIAMONDSx.github.io/master/eleos/versions.txt";
 			URL link = new URL(url);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(link.openStream()));
@@ -34,9 +34,9 @@ public class UpdateChecker {
 						new UpdateScreen(inputLine, version);
 					}else {
 						boolean important = false;
-						if(inputLine.contains("oioi")) {
+						if(inputLine.contains("imp:")) {
 							important = true;
-							inputLine.replace("oioi", "");
+							inputLine.replace("imp:", "");
 						}
 						int[] cmpVer = getVersionNums(inputLine);
 						int[] curVer = getVersionNums(inputLine);

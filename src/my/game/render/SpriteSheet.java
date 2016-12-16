@@ -109,7 +109,7 @@ public class SpriteSheet {
 	
 	private void init() {
 		try {
-			BufferedImage img = ImageIO.read(SpriteSheet.class.getResource(location));/*new FileInputStream(new File(location))*/
+			BufferedImage img = ImageIO.read(SpriteSheet.class.getResource(location));
 			height = img.getHeight();
 			width = img.getWidth();
 			pixels = new int[this.width*this.height];
