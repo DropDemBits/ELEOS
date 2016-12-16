@@ -3,5 +3,7 @@ distro2
 distro3
 1.0b0
 1.0b1
----newer---
 1.0b2
+---newer---
+1.0b3
+#1.0b4
