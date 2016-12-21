@@ -214,7 +214,7 @@ public class GameCore extends Canvas implements Runnable {
 		if(currentState == GameState.TITLE_SCREEN) {
 			activeMenuGui.setActive();
 			activeMenuGui.update();
-			if(!Utilities.muted && !playingMusic && (new Random().nextInt(1000) == 0)) { 
+			if(!Utilities.muted && !playingMusic) { 
 				playingMusic = true;
 				Utilities.playSound("title.wav", 0, () -> {
 					playingMusic = false;
