@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import my.game.core.GameCore;
-import my.game.entity.EntityItem;
 import my.game.entity.player.EntityPlayer;
 import my.game.events.EventHandler;
 import my.game.events.MouseEvent;
@@ -201,23 +200,7 @@ public class UIInventory extends UIComponent {
 				}
 			}
 		}else if(currentItem != null) {
-			/*if(GameCore.instance().getGuiMgr().mouseInGui(e.x, e.y)) return;
-			if(e.button == 3) {
-				//multi
-				EntityItem item = new EntityItem(GameCore.instance().getClientPlayer().level,
-						GameCore.instance().getClientPlayer().x, GameCore.instance().getClientPlayer().y, currentItem);
-				GameCore.instance().getClientPlayer().level.spawnEntity(item);
-				currentItem = null;
-			}else if(e.button == 1) {
-				//single
-				EntityItem item = new EntityItem(GameCore.instance().getClientPlayer().level,
-						GameCore.instance().getClientPlayer().x, GameCore.instance().getClientPlayer().y, new ItemStack(currentItem.getItem(), 1));
-				GameCore.instance().getClientPlayer().level.spawnEntity(item);
-				currentItem.quantity--;
-				if(currentItem.quantity <= 0) {
-					currentItem = null;
-				}
-			}*/
+			
 		}
 		player.currentItem = currentItem;
 	}

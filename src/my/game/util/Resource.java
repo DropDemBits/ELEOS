@@ -22,5 +22,12 @@ public class Resource {
 		else higherPath = "eleos";
 		resourcePath = path;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || obj.getClass() != getClass()) return false;
+		Resource cmpObj = (Resource) obj;
+		return cmpObj.higherPath == higherPath && cmpObj.resourcePath == resourcePath;
+	}
 
 }

@@ -1,7 +1,5 @@
 package my.game.render;
 
-import java.util.Random;
-
 import my.game.core.*;
 import my.game.entity.mob.EntityChase;
 import my.game.entity.mob.EntityMob;
@@ -21,16 +19,11 @@ public class Screen {
 	public int[] tiles = new int[mapSize * mapSize];
 	
 	public int xOffset, yOffset;
-	private Random rand = new Random(System.nanoTime());
 	
 	public Screen(int width, int height) {
 		this.width = width;
 		this.height = height;
 		pixels = new int[width * height];
-		
-		for(int i = 0; i < mapSize*mapSize; i++) {
-			tiles[i] = rand.nextInt(0xffffff);
-		}
 	}
 	
 	public void renderTile(int xPos, int yPos, Tile tile) {

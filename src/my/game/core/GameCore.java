@@ -17,6 +17,7 @@ import my.game.item.*;
 import my.game.network.*;
 import my.game.render.*;
 import my.game.render.ui.UIManager;
+import my.game.util.AssetLoader;
 import my.game.util.Utilities;
 import my.game.world.*;
 
@@ -29,7 +30,7 @@ public class GameCore extends Canvas implements Runnable {
 	private static int width = 300 - 80, height = 168, scale = 3;
 	/**Window Object*/
 	private JFrame window;
-	private String version = "1.0b2";
+	private String version = "1.0b3";
 	public static boolean DEV = true;
 	
 	//Threads (Include others later)
@@ -48,11 +49,13 @@ public class GameCore extends Canvas implements Runnable {
 	private Screen screen;
 	private Level currentLevel;
 	
+	private String[] args; 
 	private EntityPlayer thePlayer;
 	private Entity cameraPos;
-	boolean init = true;
+	private boolean init = true;
 	private static UIManager uiMgr;
 	private static GuiManager guiMgr;
+	private static AssetLoader textureLoader;
 	
 	private KeyHandler keys = new KeyHandler();
 	public static final EventBusser CORE_BUSSER = new EventBusser();
@@ -72,6 +75,8 @@ public class GameCore extends Canvas implements Runnable {
 		//Do pre-runtime things here
 		instance = this;
 		
+		this.args = args;
+		
 		UpdateChecker.checkForUpdates(version);
 		
 		screen = new Screen(width, height);
@@ -86,24 +91,7 @@ public class GameCore extends Canvas implements Runnable {
 		
 		uiMgr = new UIManager();
 		guiMgr = new GuiManager();
-		currentLevel = Level.spawn;
-		
-		Item.registerAllItems();
-		
-		TilePos pos = new TilePos(60, 60);
-		thePlayer = new EntityPlayer(currentLevel, args[0], pos.getX(), pos.getY(),keys);
-		cameraPos = thePlayer;
-		
-		rand = new Random();
-		MouseHandler mouse = new MouseHandler();
-		addMouseListener(mouse);
-		addMouseMotionListener(mouse);
-		window.addKeyListener(keys);
-		
-		activeMenuGui = new GuiMenuMain();
-		currentState = GameState.GAMEPLAY;
-		
-		connectionMgr = ConnectionManager.INSTANCE;
+		textureLoader = new AssetLoader();
 	}
 	
 	public static int getWindowWidth() {
@@ -143,6 +131,28 @@ public class GameCore extends Canvas implements Runnable {
 	@Override
 	public void run() {
 		//If we want to init things, then do it here
+		
+		//textureLoader.loadAssets("/textures/");
+		
+		currentLevel = Level.spawn;
+		//Requires Assets
+		Item.registerAllItems();
+		
+		TilePos pos = new TilePos(60, 60);
+		thePlayer = new EntityPlayer(currentLevel, args[0], pos.getX(), pos.getY(),keys);
+		cameraPos = thePlayer;
+		
+		rand = new Random();
+		MouseHandler mouse = new MouseHandler();
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
+		window.addKeyListener(keys);
+		
+		activeMenuGui = new GuiMenuMain();
+		if(DEV) currentState = GameState.GAMEPLAY;
+		else currentState = GameState.TITLE_SCREEN;
+		
+		connectionMgr = ConnectionManager.INSTANCE;
 		
 		//Timer Variables
 		long lastTime = System.nanoTime();
@@ -317,6 +327,10 @@ public class GameCore extends Canvas implements Runnable {
 	
 	public Level getCurrentLevel() {
 		return currentLevel;
+	}
+	
+	public AssetLoader getTextureManager() {
+		return textureLoader;
 	}
 	
 	public static void main(String[] args) throws Exception {

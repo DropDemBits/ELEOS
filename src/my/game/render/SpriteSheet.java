@@ -5,6 +5,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import my.game.core.GameCore;
+import my.game.util.Resource;
+
 public class SpriteSheet {
 
 	String location;
@@ -108,15 +111,12 @@ public class SpriteSheet {
 	}
 	
 	private void init() {
-		try {
-			BufferedImage img = ImageIO.read(SpriteSheet.class.getResource(location));
-			height = img.getHeight();
-			width = img.getWidth();
-			pixels = new int[this.width*this.height];
-			img.getRGB(0, 0, width, height, pixels, 0, img.getWidth());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		BufferedImage img = GameCore.instance().getTextureManager().get(new Resource("eleos", location));
+		if(img == null) return;
+		height = img.getHeight();
+		width = img.getWidth();
+		pixels = new int[this.width*this.height];
+		img.getRGB(0, 0, width, height, pixels, 0, img.getWidth());
 	}
 
 	public int[] getPixels() {

@@ -5,8 +5,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.List;
 
-import javax.imageio.*;
-
 import my.game.core.*;
 import my.game.core.GameCore.*;
 import my.game.entity.*;
@@ -50,7 +48,7 @@ public class EntityPlayer extends EntityMob {
 	public ItemStack currentItem;
 	public int currentSlot = 0;
 	
-	public EntityPlayer(Level currentLevel, String name, int x, int y, KeyHandler input, Inventory inv) throws Exception {
+	public EntityPlayer(Level currentLevel, String name, int x, int y, KeyHandler input, Inventory inv) {
 		super(currentLevel, x, y);
 		this.input = input;
 		current = down;
@@ -88,25 +86,12 @@ public class EntityPlayer extends EntityMob {
 				else button.setText(new UILabel(new Vector2i(0,20), "Mute").setFont(new Font("Sans", 0, 20)));
 			}
 		});
-		/*exampleButton.setButtonListener(new UIButtonListener() {
-			@Override
-			public void mousePressed(UIButton button) {
-				
-			}
-			
-			@Override
-			public void mouseReleased(UIButton button) {
-				Utilities.muted = !Utilities.muted;
-				if(Utilities.muted) button.setText(new UILabel(new Vector2i(0,20), "Unmute").setFont(new Font("Sans", 0, 20)));
-				else button.setText(new UILabel(new Vector2i(0,20), "Mute").setFont(new Font("Sans", 0, 20)));
-			}
-		});*/
 		
 		healthMeter.foregroundClr = (0xFF0000);
 		expMeter.foregroundClr = (0x00A300);
 		expMeter.countdown = false;
 		
-		image = ImageIO.read(EntityPlayer.class.getResourceAsStream("/textures/homeIcon.png"));
+		image = GameCore.instance().getTextureManager().get(new Resource("eleos", "/textures/homeIcon.png"));//ImageIO.read(EntityPlayer.class.getResourceAsStream(""));
 		
 		byte[] srcPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
 		imageHover = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
@@ -161,7 +146,7 @@ public class EntityPlayer extends EntityMob {
 		playerInventory.setStack(3, new ItemStack(Items.confiCannon));
 	}
 	
-	public EntityPlayer(Level currentLevel, String name, int x, int y, KeyHandler input) throws Exception {
+	public EntityPlayer(Level currentLevel, String name, int x, int y, KeyHandler input) {
 		this(currentLevel, name, x, y, input, null);
 	}
 	
@@ -182,7 +167,7 @@ public class EntityPlayer extends EntityMob {
 		boolean movingX = false, movingY = false;
 		super.update();
 		if(currentItem != null && currentItem.quantity == 0) currentItem = null;
-		noClip = true;
+		noClip = true && GameCore.DEV;
 		if(rand.nextInt(100) == 0) health += 0.5;
 		if(health > 100) health = 100;
 		else if(health < 0) health = 0;
@@ -401,6 +386,7 @@ public class EntityPlayer extends EntityMob {
 			}
 		}
 		moving = false;
+		if(!GameCore.DEV) return;
 		my.game.render.Font fnt = new my.game.render.Font();
 		fnt.drawString(screen, 0, 0, "X: " + x + "\nY: " + y, false);
 	}
