@@ -18,8 +18,8 @@ import my.game.inventory.*;
  */
 public class GuiManager {
 
-	private static List<GuiIngame> openGuis = new CopyOnWriteArrayList<>();
-	private static List<IGuiHandler> guiHandlers = new ArrayList<>();
+	private static List<GuiIngame> openGuis = new CopyOnWriteArrayList<GuiIngame>();
+	private static List<IGuiHandler> guiHandlers = new ArrayList<IGuiHandler>();
 	private static int currentGuiID;
 	
 	public GuiManager() {

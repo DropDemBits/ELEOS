@@ -19,6 +19,7 @@ import my.game.render.*;
 import my.game.render.ui.UIManager;
 import my.game.util.AssetLoader;
 import my.game.util.Utilities;
+import my.game.util.Utilities.IClipEndAction;
 import my.game.world.*;
 
 //We want to paint on it...
@@ -216,8 +217,11 @@ public class GameCore extends Canvas implements Runnable {
 			activeMenuGui.update();
 			if(!Utilities.muted && !playingMusic && (new Random().nextInt(1000) == 0)) { 
 				playingMusic = true;
-				Utilities.playSound("title.wav", 0, () -> {
-					playingMusic = false;
+				Utilities.playSound("title.wav", 0, new IClipEndAction() {
+					@Override
+					public void action() {
+						playingMusic = false;						
+					}
 				});
 			}
 		}else if(currentState == GameState.MULTIPLAYER_SELECTION && DEV) {

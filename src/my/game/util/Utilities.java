@@ -25,7 +25,7 @@ public class Utilities {
 		playSound(input, dbVol, null);
 	}
 	
-	public static synchronized void playSound(String input, int dbVol, IClipEndAction action) {
+	public static synchronized void playSound(String input, int dbVol, final IClipEndAction action) {
 		if(globalVolume > 6.0206) globalVolume = 6.0206;
 		if (muted) return;
 		if(input == null) {

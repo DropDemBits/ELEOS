@@ -2,23 +2,13 @@ package my.game.render.ui;
 
 public interface UIButtonListener {
 	
-	public default void mouseEntered(UIButton button) {
-		button.setColor(0x999999);
-	}
+	public void mouseEntered(UIButton button);
 	
-	public default void mouseExited(UIButton button) {
-		button.setColor(0x777777);
-	}
+	public void mouseExited(UIButton button);
 	
 	
-	public default void mousePressed(UIButton button) {
-		button.setColor(0x555555);
-		button.preformAction();
-		button.ignoreNextPress();
-	}
+	public void mousePressed(UIButton button);
 	
-	public default void mouseReleased(UIButton button){
-		button.setColor(0x999999);
-	}
+	public void mouseReleased(UIButton button);
 	
 }

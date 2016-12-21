@@ -19,8 +19,8 @@ public class TileEntity {
 	}
 	
 	public void readData(SEObject data) {
-		xPos = (int) data.pullField("xPos").getData();
-		yPos = (int) data.pullField("yPos").getData();
+		xPos = (Integer) data.pullField("xPos").getData();
+		yPos = (Integer) data.pullField("yPos").getData();
 	}
 	//END OF TODO
 	

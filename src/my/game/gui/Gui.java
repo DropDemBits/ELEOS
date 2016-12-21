@@ -11,7 +11,7 @@ public class Gui {
 	
 	private boolean isActive = false;
 	private int id;
-	private List<GuiButton> buttons = new ArrayList<>();
+	private List<GuiButton> buttons = new ArrayList<GuiButton>();
 	private boolean hasRequestedClose;
 	
 	public Gui() {

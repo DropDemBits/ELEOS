@@ -39,7 +39,12 @@ public class ConnectionManager {
 			socket = new DatagramSocket();
 			
 			listening = true;
-			listenerThread = new Thread(this::listen, "FlyTrap");
+			listenerThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					listen();
+				}
+			}, "FlyTrap");
 			listenerThread.start();
 			
 			send(new byte[] {8, 3, 3});
