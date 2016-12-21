@@ -114,6 +114,18 @@ public class EntityPlayer extends EntityMob {
 			public void mouseExited(UIButton button) {
 				button.setIcon(image);
 			}
+
+			@Override
+			public void mousePressed(UIButton button) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(UIButton button) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		spawnButtonIco.setActionListener(new UIEventListener() {
 			@Override

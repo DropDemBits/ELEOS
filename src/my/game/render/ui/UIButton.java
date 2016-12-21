@@ -27,7 +27,7 @@ public class UIButton extends UIComponent {
 		super(pos);
 		this.size = size;
 		clr = 0x777777;
-		buttonListener = new UIButtonListener() {};
+		buttonListener = new UIGenericButtonListener();
 		
 		eventListener = new UIEventListener() {public void preformAction(UIButton button) {}};
 	}
