@@ -32,7 +32,7 @@ public class GameCore extends Canvas implements Runnable {
 	/**Window Object*/
 	private JFrame window;
 	private String version = "1.0b3";
-	public static boolean DEV = true;
+	public static boolean DEV = false;
 	
 	//Threads (Include others later)
 	private Thread clientThread;
@@ -215,7 +215,7 @@ public class GameCore extends Canvas implements Runnable {
 		if(currentState == GameState.TITLE_SCREEN) {
 			activeMenuGui.setActive();
 			activeMenuGui.update();
-			if(!Utilities.muted && !playingMusic && (new Random().nextInt(1000) == 0)) { 
+			if(!Utilities.muted && !playingMusic/* && (new Random().nextInt(1000) == 0)*/) { 
 				playingMusic = true;
 				Utilities.playSound("title.wav", 0, new IClipEndAction() {
 					@Override

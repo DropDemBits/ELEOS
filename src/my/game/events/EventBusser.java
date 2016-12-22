@@ -2,6 +2,7 @@ package my.game.events;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,7 +81,7 @@ public class EventBusser {
 							listeners.put(eventType.getName(), otherHandlers);
 						}else {
 							otherHandlers.add(l);
-							otherHandlers.sort(new Comparator<IEventListener>() {
+							Collections.sort(otherHandlers, new Comparator<IEventListener>() {
 
 								@Override
 								public int compare(IEventListener one, IEventListener two) {
@@ -120,7 +121,7 @@ public class EventBusser {
 			listeners.put(evtClass.getName(), otherHandlers);
 		}else {
 			otherHandlers.add(listener);
-			otherHandlers.sort(new Comparator<IEventListener>() {
+			Collections.sort(otherHandlers, new Comparator<IEventListener>() {
 
 				@Override
 				public int compare(IEventListener one, IEventListener two) {

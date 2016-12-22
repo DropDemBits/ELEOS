@@ -37,8 +37,8 @@ public class EntityStarboard extends EntityMob {
 				//A Star Search
 				int playerX = (int) entities.get(0).x;
 				int playerY = (int) entities.get(0).y;
-
-				Vector2i start = new Vector2i(Math.floorDiv((int) x, 16), Math.floorDiv((int) y, 16));
+				
+				Vector2i start = new Vector2i(x == 0 ? 0 : (int)Math.floor((int) x / 16), y == 0 ? 0 : (int)Math.floor((int) y / 16));
 				Vector2i goal = new Vector2i(playerX >> 4, playerY >> 4);
 				if (time % 60 == 0) path = level.findPath(start, goal);
 				if (path != null) {
