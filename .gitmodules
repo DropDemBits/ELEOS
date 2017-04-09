@@ -1,0 +1,3 @@
+[submodule "Serial2"]
+	path = Serial2
+	url = https://github.com/DropDemBits/Serial2.git
