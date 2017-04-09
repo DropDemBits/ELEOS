@@ -14,7 +14,7 @@ public class UpdateScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UpdateScreen(String oldVer, String newVer) {
+	public UpdateScreen(String oldVer, String newVer, boolean important) {
 		focus = true;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 302, 204);
@@ -56,8 +56,14 @@ public class UpdateScreen extends JFrame {
 		contentPane.setSize(300, 300);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		JLabel lblThereIsAn = new JLabel("There is an update available");
-		lblThereIsAn.setBounds(54, 12, 170, 14);
+		JLabel lblThereIsAn;
+        if(important) {
+            lblThereIsAn = new JLabel("There is an IMPORTANT update available");
+            lblThereIsAn.setBounds(54/8, 12, 1000, 14);
+        } else {
+            lblThereIsAn = new JLabel("There is an update available");
+            lblThereIsAn.setBounds(54-("There is an update available".length()/2), 12, 1000, 14);
+        }
 		contentPane.add(lblThereIsAn);
 
 		JLabel lblTheNewVersion = new JLabel("The new version is " + oldVer);
@@ -83,19 +89,18 @@ public class UpdateScreen extends JFrame {
 		btnOk.setBounds(99, 85, 89, 23);
 		contentPane.add(btnOk);
 		
-		JLabel lblHttpsrawgithubusercontentcomxdiamondsxxdiamondsxgithubiomastereleosversionstxt = new JLabel("https://raw.githubusercontent.com/xDIAMONDSx/\r\n");
-		lblHttpsrawgithubusercontentcomxdiamondsxxdiamondsxgithubiomastereleosversionstxt.setBounds(12, 128, 282, 14);
+		JLabel lblHttpsrawgithubusercontentcomxdiamondsxxdiamondsxgithubiomastereleosversionstxt = new JLabel("https://github.com/DropDemBits/ELEOS\r\n");
+		lblHttpsrawgithubusercontentcomxdiamondsxxdiamondsxgithubiomastereleosversionstxt.setBounds(12, 128, 1000, 14);
 		contentPane.add(lblHttpsrawgithubusercontentcomxdiamondsxxdiamondsxgithubiomastereleosversionstxt);
-		
-		JLabel lblXdiamondsxgithubiomastereleosversionstxt = new JLabel("xDIAMONDSx.github.io/master/eleos/versions.txt");
-		lblXdiamondsxgithubiomastereleosversionstxt.setBounds(12, 142, 282, 16);
-		contentPane.add(lblXdiamondsxgithubiomastereleosversionstxt);
-
-		setVisible(true);
-
+	}
+    
+    public void display() {
+        setVisible(true);
+        
 		while (focus) {
 			requestFocus();
 		}
 		setVisible(false);
-	}
+    }
+    
 }

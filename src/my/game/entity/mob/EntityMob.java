@@ -25,6 +25,7 @@ public abstract class EntityMob extends Entity {
 	public double currentExp = 0;
 	public int expLevel = 1;
 	protected EntityProjectile pj;
+    protected int damageTime;
 	public int cycle = 0;
 	
 	protected EntityMob(Level level, int x, int y) {
@@ -41,6 +42,7 @@ public abstract class EntityMob extends Entity {
 	public void update() {
 		cycle++;
 		cycle%=60;
+        damageTime--;
 		if(Math.floor(health) <= 0) {
 			if(deathSound() != null) Utilities.playSound(deathSound());
 			remove();
@@ -153,9 +155,10 @@ public abstract class EntityMob extends Entity {
 	}
 
 	public void damage(DamageSource d) {
-		if(cycle % 15 == 0 && hitSound() != null) Utilities.playSound(hitSound());
+		if(damageTime <= 0 && hitSound() != null)Utilities.playSound(hitSound());
 		if(d.dmg < 0) return;
 		health -= d.dmg;
+        damageTime = 500;
 	}
 	
 

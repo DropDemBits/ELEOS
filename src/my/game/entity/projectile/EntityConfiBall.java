@@ -43,7 +43,7 @@ public class EntityConfiBall extends EntityProjectile {
 	
 	@Override
 	public void removeAnim() {
-		Utilities.playSound("confi_Spread.wav", 0);
+		Utilities.playSound("confi_Spread.wav", 0.5f);
 		for(int i = 0; i < 128; i++) {
 			Sprite s = new Sprite(2, 2, rand.nextInt());
 			level.spawnParticle(new EntityParticle(level, (int)x, (int)y, rand.nextInt(300), s));

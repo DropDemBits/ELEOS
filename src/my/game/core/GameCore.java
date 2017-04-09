@@ -30,7 +30,7 @@ public class GameCore extends Canvas implements Runnable {
 	private static int width = 300 - 80, height = 168, scale = 3;
 	/**Window Object*/
 	private JFrame window;
-	private String version = "1.0b3";
+	private String version = "1.0b3.3";
 	public static boolean DEV = false;
 	
 	//Threads (Include others later)
@@ -216,7 +216,7 @@ public class GameCore extends Canvas implements Runnable {
 			activeMenuGui.update();
 			if(!Utilities.muted && !playingMusic) { 
 				playingMusic = true;
-				Utilities.playSound("title.wav", 0, () -> {
+				Utilities.playSound("title.wav", 0.50f, () -> {
 					playingMusic = false;
 				});
 			}

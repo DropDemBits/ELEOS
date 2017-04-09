@@ -4,6 +4,7 @@ res/sound/bfxr/
 .metadata/
 .classpath
 .project
-/bin/
+/*bin/
 /nbproject/private
 .*swp
+/build/
