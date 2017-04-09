@@ -1,10 +1,9 @@
 package my.game.entity.player;
 
+import gio.ddb.serial2.SEBlock;
 import my.game.core.*;
 import my.game.events.*;
 import my.game.world.*;
-import util.serialization.*;
-import util.serialization.types.*;
 
 public class EntityPlayerMP extends EntityPlayer {
 
@@ -20,27 +19,18 @@ public class EntityPlayerMP extends EntityPlayer {
 	@Override
 	public void move(double xDir, double yDir) {
 		super.move(xDir, yDir);
-		SEDatabase db = new SEDatabase("Packet");
-		SEObject data = new SEObject("data");
-		SEString name = SEString.createString("name", "C1");
-		SEField xMove = SEField.createField("xMove", DataType.DOUBLE, xDir);
-		SEField yMove = SEField.createField("yMove", DataType.DOUBLE, yDir);
-		SEField xPos = SEField.createField("xPos", DataType.DOUBLE, x);
-		SEField yPos = SEField.createField("yPos", DataType.DOUBLE, y);
-		
-		data.pushString(name);
-		data.pushField(xMove);
-		data.pushField(yMove);
-		data.pushField(xPos);
-		data.pushField(yPos);
-		
-		db.pushObject(data);
-		ConnectionManager.INSTANCE.send(db);
+		SEBlock data = new SEBlock();
+		data.setValue("name", "C1");
+		data.setValue("xMove", xDir);
+		data.setValue("yMove", yDir);
+		data.setValue("xPos", x);
+		data.setValue("yPos", y);
+        
+		ConnectionManager.INSTANCE.send(data);
 	}
 
-	public void confirmMovement(SEDatabase db) {
-		SEObject data = db.pullObject("data");
-		double xPos = (Double)data.pullField("xPos").getData(), yPos = (Double)data.pullField("yPos").getData();
+	public void confirmMovement(SEBlock block) {
+        double xPos = block.getDouble("xPos"), yPos = block.getDouble("yPos");
 		if(this.x != xPos) this.x = xPos;
 		if(this.y != yPos) this.y = yPos;
 	}

@@ -1,10 +1,12 @@
 package my.game.core;
 
+import gio.ddb.serial2.SEBase;
+import gio.ddb.serial2.SEBlock;
+import gio.ddb.serial2.SEType;
 import java.net.*;
 
 import my.game.core.GameCore.*;
 import my.game.entity.player.*;
-import util.serialization.types.*;
 
 public class ConnectionManager {
 
@@ -63,9 +65,10 @@ public class ConnectionManager {
 		}
 	}
 	
-	public void send(SEDatabase db) {
-		byte[] data = new byte[db.getSize()];
-		db.getBytes(data, 0);
+	public void send(SEBlock block) {
+        if(block.getType() != SEType.ROOT_BLOCK.value()) return;
+		byte[] data = new byte[block.getSize()];
+		block.getSerialized();
 		send(data);
 	}
 	
@@ -82,12 +85,10 @@ public class ConnectionManager {
 	private void processPacket(DatagramPacket packet) {
 		byte[] data = packet.getData();
 		if(data.length < 3) return;
-		if(new String(data, 0, 4).getBytes().equals(SEDatabase.HEADER_META)) {
+		if(new String(data, 0, 4).getBytes().equals(SEBase.DBSIG)) {
 			//Process data
-			SEDatabase db = SEDatabase.deserializeData(data);
-			if(db != null) {
-				handleDB(db, packet);
-			}
+			SEBlock block = new SEBlock(data);
+			handleDB(block, packet);
 		} else {
 			//Minimal data
 			if(data[0] != 8 || data[1] != 3) return;
@@ -116,12 +117,12 @@ public class ConnectionManager {
 		}
 	}
 	
-	private void handleDB(SEDatabase db, DatagramPacket packet) {
-		String pName = db.pullObject("data").pullString("name").toString();
-		if(pName == "S1") {
+	private void handleDB(SEBlock block, DatagramPacket packet) {
+		String pName = block.getBlock("object").getString("name");
+		if(pName.equals("S1")) {
 			if(GameCore.instance().getClientPlayer() instanceof EntityPlayerMP) {
 				EntityPlayerMP player = (EntityPlayerMP)GameCore.instance().getClientPlayer();
-				player.confirmMovement(db);
+				player.confirmMovement(block);
 			}else {
 				throw new RuntimeException("Player is not MP type even though we are on server");
 			}

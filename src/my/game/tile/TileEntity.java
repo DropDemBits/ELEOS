@@ -1,7 +1,6 @@
 package my.game.tile;
 
-import util.serialization.*;
-import util.serialization.types.*;
+import gio.ddb.serial2.SEBlock;
 
 public class TileEntity {
 
@@ -12,15 +11,15 @@ public class TileEntity {
 	}
 	
 	//TODO: Add serialization stuff here
-	public void writeData(SEObject data) {
-		data.pushField(SEField.createField("xPos", DataType.INT, xPos));
-		data.pushField(SEField.createField("yPos", DataType.INT, yPos));
-		data.pushString(SEString.createString("type", getClass().getName()));
+	public void writeData(SEBlock data) {
+		data.setValue("xPos", xPos);
+        data.setValue("yPos", xPos);
+        data.setValue("type", getClass().getSimpleName());
 	}
 	
-	public void readData(SEObject data) {
-		xPos = (int) data.pullField("xPos").getData();
-		yPos = (int) data.pullField("yPos").getData();
+	public void readData(SEBlock data) {
+		xPos = data.getInt("xPos");
+		yPos = data.getInt("yPos");
 	}
 	//END OF TODO
 	
