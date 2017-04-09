@@ -352,23 +352,23 @@ public class Level {
 	 * @return A stack of nodes that represents the path between the two nodes
 	 */
 	public Stack<Node> findPath(Vector2i start, Vector2i goal) {
-		int operations = 0;
-		ArrayList<Node> openList = new ArrayList<Node>();
-		ArrayList<Node> closedList = new ArrayList<Node>();
+		List<Node> openList = new ArrayList<>();
+		Set<Node> closedList = new HashSet<>();
 		Node current = new Node(start, null, 0, getDistance(start, goal));
 		openList.add(current);
+        int ops = 0;
 		while(openList.size() > 0) {
-			if(operations >= 30000) return null;
+            if(ops > 5000) break;
 			Collections.sort(openList, nSort);
-			current = openList.get(0);
+            current = openList.get(0);
 			if(current.pos.equals(goal)) {
-				Stack<Node> path = new Stack<Node>();
+				Stack<Node> path = new Stack<>();
 				while(current.parent != null) {
 					path.add(current.parent);
 					current = current.parent;
 				}
-				openList.clear();
-				closedList.clear();
+				//openList.clear();
+				//closedList.clear();
 				return path;
 			}
 			openList.remove(current);
@@ -384,25 +384,32 @@ public class Level {
 				
 				Tile at = getTile(x+xAd, y+yAd, 0);
 				
-				if(at == BaseTiles.air) continue;
-				if(at.isSolid()) continue;
+				if(at == BaseTiles.air || at.isSolid()) continue;
 				Vector2i tilePos = new Vector2i(x+xAd, y+yAd);
-				double gCost = current.gCost + (getDistance(current.pos, tilePos) == 1 ? 1 : 0.95);
+				double gCost = current.gCost + (getDistance(current.pos, tilePos) == 1 ? 1 : 1);
 				double hCost = current.hCost + getDistance(tilePos, goal);
 				
 				Node node = new Node(tilePos, current, gCost, hCost);
 				
-				if(vecInList(closedList, tilePos) && gCost >= node.gCost) continue;
+				if(vecInSet(closedList, tilePos) && gCost >= node.gCost) continue;
 				if(!vecInList(openList, tilePos) || gCost < node.gCost) openList.add(node);
-				operations++;
 			}
+            ops++;
+            System.out.println(ops);
 		}
-		closedList.clear();
-		closedList.trimToSize();
+		//closedList.clear();
+		//closedList.trimToSize();
 		return null;
 	}
 	
 	private boolean vecInList(List<Node> list, Vector2i vector) {
+		for(Node n : list) {
+			if(n.pos == vector) return true;
+		}
+		return false;
+	}
+    
+    private boolean vecInSet(Set<Node> list, Vector2i vector) {
 		for(Node n : list) {
 			if(n.pos == vector) return true;
 		}

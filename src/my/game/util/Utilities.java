@@ -5,10 +5,7 @@ import java.io.InputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineEvent.Type;
-import javax.sound.sampled.LineListener;
+import javax.sound.sampled.DataLine;
 
 public class Utilities {
 
@@ -16,7 +13,7 @@ public class Utilities {
 	
 	public static boolean muted = false;
 	public static double globalVolume = 0d;
-	
+    
 	public static synchronized void playSound(String input) {
 		playSound(input, 0);
 	}
@@ -32,28 +29,14 @@ public class Utilities {
 			muted = true;
 			return;
 		}
-		// from http://stackoverflow.com/questions/16044136/no-sound-after-export-to-jar
+		
 		if(Debug.DEBUG) System.out.println(input);
 		try {
-			Clip clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem
-					.getAudioInputStream(Utilities.class.getResource("/sound/" + input));
-			clip = AudioSystem.getClip();
-			clip.open(inputStream);
-			FloatControl gainControl = 
-				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(dbVol+(int)globalVolume); 
-			clip.start();
-			clip.addLineListener(new LineListener() {
-				
-				@Override
-				public void update(LineEvent e) {
-					if(e.getType() == Type.STOP && e.getSource() instanceof Clip) {
-						if(action != null) action.action();
-						((Clip)e.getSource()).close();
-					}
-				}
-			});
+            AudioInputStream ais = AudioSystem.getAudioInputStream(Utilities.class.getResource("/sound/" + input));
+            DataLine.Info info = new DataLine.Info(Clip.class, ais.getFormat());
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(ais);
+            clip.loop(0);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

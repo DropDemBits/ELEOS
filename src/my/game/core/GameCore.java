@@ -31,7 +31,7 @@ public class GameCore extends Canvas implements Runnable {
 	/**Window Object*/
 	private JFrame window;
 	private String version = "1.0b3";
-	public static boolean DEV = true;
+	public static boolean DEV = false;
 	
 	//Threads (Include others later)
 	private Thread clientThread;

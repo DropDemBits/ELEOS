@@ -236,14 +236,10 @@ public class EntityPlayer extends EntityMob {
 		
 		
 		if(xDir > 0 && !movingX) xDir += -movementSpeed / 8d;
-		//else xDir = 0;
 		if(xDir < 0 && !movingX) xDir += movementSpeed / 8d;
-		//else xDir = 0;
 		
 		if(yDir > 0 && !movingY) yDir += -movementSpeed / 8d;
-		//else yDir = 0;
 		if(yDir < 0 && !movingY) yDir += movementSpeed / 8d;
-		//else yDir = 0;
 	}
 	
 	@EventHandler
